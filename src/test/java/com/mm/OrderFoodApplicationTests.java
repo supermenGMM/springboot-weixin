@@ -1,5 +1,6 @@
 package com.mm;
 
+import com.mm.pojo.QProductInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
