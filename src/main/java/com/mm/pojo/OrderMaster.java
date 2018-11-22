@@ -68,13 +68,13 @@ public class OrderMaster  implements Serializable {
 	 * 订单状态, 默认为新下单
 	 */
    	@Column(name = "order_status" )
-	private Integer orderStatus = OrderStatusEnum.FAIL.getCode();
+	private Integer orderStatus = OrderStatusEnum.NEW.getCode();
 
 	/**
 	 * 支付状态, 默认未支付
 	 */
    	@Column(name = "pay_status" )
-	private Integer payStatus= PayStatusEnum.FAIL.getCode();
+	private Integer payStatus= PayStatusEnum.UNPAY.getCode();
 
 	/**
 	 * 创建时间

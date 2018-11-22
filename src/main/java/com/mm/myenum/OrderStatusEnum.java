@@ -1,8 +1,11 @@
 package com.mm.myenum;
 
 public enum OrderStatusEnum {
-    SUCCESS(0, "成功"),
-    FAIL(1, "失败");
+    NEW(0, "新建"),
+    CANCEL(1, "取消"),
+    REVEIVE(2, "已接单"),
+    DILIVERYING(3, "配送中"),
+    FINISHED(4, "已送达"),;
     private int code;
     private String desc;
 
