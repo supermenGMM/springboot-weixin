@@ -2,6 +2,7 @@ package com.mm.service;
 
 import com.mm.dto.OrderDto;
 import com.mm.exception.SellException;
+import com.mm.myenum.ProductStatusEnum;
 import com.mm.myenum.ResponseEnum;
 import com.mm.pojo.OrderMaster;
 import com.mm.pojo.ProductInfo;
@@ -15,11 +16,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.xml.ws.Response;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static com.mm.pojo.QProductInfo.productInfo;
 
 @Service
 public class OrderService {
@@ -27,27 +31,35 @@ public class OrderService {
     private ProductInfoRepository productInfoRepository;
     @Autowired
     private OrderMasterRepository orderMasterRepository;
-
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+    @Autowired
+    private ProductService productService;
 
+    @Transactional
     public OrderMaster createOrder( OrderDto orderDto) {
+        //减少库存 todo  库存放在最开始。因为如果库存不足，没必要做下面的操作
+        //如果库存为0，则修改产品状态为 下架；如果库存不够，则抛异常。 todo  应该先检查库存。
+        orderDto.getOrderDetails().stream().forEach(o->{
+            ProductInfo productInfo = productService.findById(o.getProductId());
+            Long remain = productInfo.getProductStock()-o.getProductQuantity();
+            if(remain<0){
+                throw new SellException(ResponseEnum.PRODUCT_STOCK_NOENOUGH);
+            } else if(remain == 0){
+               productInfo.down();
+            } else {
+              productInfo.setProductStock(productInfo.getProductStock()-o.getProductQuantity());
+            }
+            productInfoRepository.saveAndFlush(productInfo);
+        });
+
+
         //获取一个orderId
         String orderId = KeyUtils.genUniqueKey();
 
         //遍历items,获取orderDetail
         orderDto.getOrderDetails().forEach(orderDetail -> {
-            ProductInfo productInfo = null;
-            try {
-                productInfo = productInfoRepository.findById(orderDetail.getProductId()).get();
-            } catch (InvalidDataAccessApiUsageException e) {//因为controller已经校验了字段的非空和正确性。这里findById不会报IllegalArgumentException异常。
-                System.out.println("-----");
-                throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR);
-            }catch (NoSuchElementException e){
-                throw new SellException(ResponseEnum.PRODUCT_NOT_FOUND);
-            } catch (Exception e) {
-                System.out.println("---"+e);
-            }
+            ProductInfo productInfo = productService.findById(orderDetail.getProductId());
             BeanUtils.copyProperties(productInfo, orderDetail);
             orderDetail.setOrderId(orderId);
             orderDetailRepository.save(orderDetail);
@@ -60,7 +72,7 @@ public class OrderService {
         orderMaster.setOrderAmount(orderDto.getOrderDetails().stream().mapToDouble(o->o.getProductPrice()).sum());
         orderMasterRepository.save(orderMaster);
 
-        //减少库存
+
         return orderMaster;
     }
 

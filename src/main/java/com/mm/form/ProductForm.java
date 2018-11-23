@@ -13,5 +13,5 @@ public class ProductForm implements Serializable{
     private String productId;
     @Positive
     @Min(value = 1,message = "商品数量必须大于1")
-    private Long productQuanti;
+    private Long productQuantity;
 }

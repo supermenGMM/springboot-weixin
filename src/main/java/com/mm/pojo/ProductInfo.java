@@ -99,4 +99,11 @@ public class ProductInfo  implements Serializable {
    	@Column(name = "update_time" )
 	private Date updateTime;
 
+    /**
+     * 下架
+     */
+    public void down() {
+        this.setProductStock(0L);
+        this.setProductStatus(ProductStatusEnum.DOWN.getCode());
+    }
 }

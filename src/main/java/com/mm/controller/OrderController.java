@@ -45,7 +45,7 @@ public class OrderController {
         orderDto.setBuyerName(orderForm.getName());
         orderDto.setBuyerOpenid(orderForm.getOpenid());
         orderDto.setBuyerPhone(orderForm.getPhone());
-        orderDto.setOrderDetails(orderForm.getItems().stream().map(o -> new OrderDetail(o.getProductId(), o.getProductQuanti())).collect(Collectors.toList()));
+        orderDto.setOrderDetails(orderForm.getItems().stream().map(o -> new OrderDetail(o.getProductId(), o.getProductQuantity())).collect(Collectors.toList()));
 
         return ResponseVo.success(orderService.createOrder(orderDto).getOrderId());
     }
