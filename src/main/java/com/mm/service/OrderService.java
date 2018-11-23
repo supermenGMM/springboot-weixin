@@ -59,6 +59,8 @@ public class OrderService {
         //从orderDetail中计算价格的总和
         orderMaster.setOrderAmount(orderDto.getOrderDetails().stream().mapToDouble(o->o.getProductPrice()).sum());
         orderMasterRepository.save(orderMaster);
+
+        //减少库存
         return orderMaster;
     }
 

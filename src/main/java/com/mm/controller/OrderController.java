@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sun.rmi.runtime.Log;
 
+import javax.sound.midi.Soundbank;
 import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/buyer/order")
@@ -36,24 +39,13 @@ public class OrderController {
             throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR.getCode(),bindingResult.getFieldError().getDefaultMessage());
         }
 
-        Gson gson = new Gson();
-        List<OrderDetail> orderDetails =gson.fromJson(orderForm.getItems(), new TypeToken<List<OrderDetail>>() {}.getType());
-        log.debug("解析到的orderDetail数组为:[{}]",orderDetails.toString());
-        if (orderDetails.isEmpty()) {
-            throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR.getCode(), "购物车为空");
-        }
-        //todo 检查手机号?
-        orderDetails.forEach(o->{
-            if (StringUtils.isBlank(o.getProductId()) && (o.getProductQuantity() == null || o.getProductQuantity() <= 0)) {
-                throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR.getCode(), "购物车的产品id和数量不能为空，且数量不能小于0");
-            }
-        });
+        //将vo转换为Dto。
         OrderDto orderDto = new OrderDto();
         orderDto.setBuyerAddress(orderForm.getAddress());
         orderDto.setBuyerName(orderForm.getName());
         orderDto.setBuyerOpenid(orderForm.getOpenid());
         orderDto.setBuyerPhone(orderForm.getPhone());
-        orderDto.setOrderDetails(orderDetails);
+        orderDto.setOrderDetails(orderForm.getItems().stream().map(o -> new OrderDetail(o.getProductId(), o.getProductQuanti())).collect(Collectors.toList()));
 
         return ResponseVo.success(orderService.createOrder(orderDto).getOrderId());
     }
