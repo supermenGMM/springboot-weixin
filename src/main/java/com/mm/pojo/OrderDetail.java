@@ -1,12 +1,15 @@
 package com.mm.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
-import javax.persistence.Id;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -18,10 +21,15 @@ import java.util.Date;
 
 @Entity
 @Data
-@Slf4j
 @Table ( name ="order_detail" )
+@DynamicInsert
+@DynamicUpdate
+@Slf4j
 public class OrderDetail  implements Serializable {
-
+    public OrderDetail(String productId, Long productQuantity) {
+        this.productId = productId;
+        this.productQuantity = productQuantity;
+    }
 
     private static final long serialVersionUID = 3048065223659541935L;
 
@@ -35,6 +43,8 @@ public class OrderDetail  implements Serializable {
     }
     @Id
    	@Column(name = "detail_id" )
+    @GeneratedValue(generator = "uuidGenerator")
+    @GenericGenerator(strategy = "uuid",name = "uuidGenerator")
 	private String detailId;
 
    	@Column(name = "order_id" )
@@ -79,4 +89,18 @@ public class OrderDetail  implements Serializable {
    	@Column(name = "update_time" )
 	private Date updateTime;
 
+    /**
+     * 初始化动作
+     */
+    @PrePersist
+    protected void onCreate() {
+        updateTime = new Date();
+
+        log.info("PrePersist ========,创建的日期为【{}】",updateTime.toString());
+    }
+
+    @PostPersist
+    protected void onPost() {
+        log.info("PostPersist ========,创建的日期为【{}】",updateTime.toString());
+    }
 }

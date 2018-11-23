@@ -27,7 +27,7 @@ public class ProductInfoRepositoryTest {
         ProductInfo productInfo = new ProductInfo();
         productInfo.setProductName("雪花");
         productInfo.setProductDescription("勇闯天涯");
-        productInfo.setProductPrice(new BigDecimal(3.4d));
+        productInfo.setProductPrice(3.4d);
         productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
         productInfo.setProductIcon("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542733358602&di=7021badd77df2b8431fd27c62055a76f&imgtype=0&src=http%3A%2F%2Fimg001.hc360.cn%2Fm6%2FM04%2F33%2F6C%2FwKhQoVZEP52ETej8AAAAAIJZwv4986.jpg");
         productInfo.setProductStock(99999L);

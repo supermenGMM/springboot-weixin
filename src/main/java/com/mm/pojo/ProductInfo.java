@@ -55,7 +55,7 @@ public class ProductInfo  implements Serializable {
 	 * 单价
 	 */
    	@Column(name = "product_price" )
-	private BigDecimal productPrice;
+	private Double productPrice;
 
 	/**
 	 * 库存
