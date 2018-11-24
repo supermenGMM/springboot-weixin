@@ -8,16 +8,16 @@ import com.mm.exception.SellException;
 import com.mm.myenum.ResponseEnum;
 import sun.applet.Main;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class GsonUtil {
 
-    public static <T> List<T> jsonToList(String json,Class<T> tClass){
+    public static <T> List<T> jsonToList(String json, Type type){
         List<T> list = null;
         try {
             Gson gson = new Gson();
-            list = gson.fromJson(json, new TypeToken<List<T>>() {
-            }.getType());
+            list = gson.fromJson(json, type);
 
         }catch (JsonSyntaxException e){
             throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR);

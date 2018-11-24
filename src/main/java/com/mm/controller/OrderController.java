@@ -1,5 +1,6 @@
 package com.mm.controller;
 
+import com.google.gson.reflect.TypeToken;
 import com.mm.dto.OrderDto;
 import com.mm.dto.StockDTO;
 import com.mm.exception.SellException;
@@ -7,7 +8,9 @@ import com.mm.form.OrderForm;
 import com.mm.form.OrderFormJson;
 import com.mm.form.ProductForm;
 import com.mm.myenum.ResponseEnum;
+import com.mm.pojo.ProductInfo;
 import com.mm.service.OrderService;
+import com.mm.util.GsonUtil;
 import com.mm.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -48,15 +53,17 @@ public class OrderController {
         orderDto.setBuyerName(orderForm.getName());
         orderDto.setBuyerOpenid(orderForm.getOpenid());
         orderDto.setBuyerPhone(orderForm.getPhone());
-        //将items转换为数组
-        List<ProductForm> productForms =null;
+        //将items转换为数组,
+        List<ProductForm> productForms = GsonUtil.jsonToList(orderForm.getItems(),new TypeToken<List<ProductForm>>(){}.getType());
 
         if (productForms==null||productForms.isEmpty()) {//无法检查里面的字段是否有空的
             throw new SellException(ResponseEnum.ORDER_NULL_ERROR);
         }
         orderDto.setStockDTOS(productForms.stream().map(p -> new StockDTO(p.getProductId(), p.getProductQuantity())).collect(Collectors.toList()));
 
-        return ResponseVo.success(orderService.createOrder(orderDto).getOrderId());
+        Map<String, String> map = new HashMap();
+        map.put("orderId",orderService.createOrder(orderDto).getOrderId());
+        return ResponseVo.success(map);
     }
 
     /**
@@ -65,7 +72,7 @@ public class OrderController {
      * @param bindingResult
      * @return
      */
-    @PostMapping(value = "/createjson " )
+    @PostMapping(value = "/createjson" )
     public ResponseVo create(@Valid @RequestBody OrderFormJson orderFormJson, BindingResult bindingResult) {
 
         //检查 请求信息

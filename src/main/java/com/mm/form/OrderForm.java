@@ -17,7 +17,7 @@ public class OrderForm implements Serializable {
     @NotNull(message = "姓名不能为空")
     private String name;
     @NotNull(message = "手机号不能为空")
-    @Pattern(regexp = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$", flags = {}, message = "手机号格式错误")
+    @Pattern(regexp = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$", message = "手机号格式错误")
     private String phone;
     @NotNull(message = "地址不能为空")
     private String address;
