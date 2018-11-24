@@ -1,6 +1,7 @@
 package com.mm.service;
 
 import com.mm.dto.OrderDto;
+import com.mm.dto.StockDTO;
 import com.mm.pojo.OrderDetail;
 import com.oracle.webservices.internal.api.EnvelopeStyle;
 import org.hibernate.event.spi.PostUpdateEventListener;
@@ -9,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class OrderServiceTest {
 
     @Autowired
     private OrderService orderService;
+//    @Transactional
     @Test
     public void createOrder() {
         OrderDto orderDto = new OrderDto();
@@ -28,9 +31,9 @@ public class OrderServiceTest {
         orderDto.setBuyerName("赵蒙");
         orderDto.setBuyerOpenid("003");
         orderDto.setBuyerPhone("1929230022");
-        List<OrderDetail> orderDetails = new ArrayList<>();
-        orderDetails.add(new OrderDetail("1", 92999L));
-        orderDto.setOrderDetails(orderDetails);
+        List<StockDTO> stockDTOS = new ArrayList<>();
+        stockDTOS.add(new StockDTO("4", 95L));
+        orderDto.setStockDTOS(stockDTOS);
         orderService.createOrder(orderDto);
     }
 

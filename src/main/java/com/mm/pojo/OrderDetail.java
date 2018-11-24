@@ -26,9 +26,7 @@ import java.util.Date;
 @DynamicUpdate
 @Slf4j
 public class OrderDetail  implements Serializable {
-    public OrderDetail(String productId, Long productQuantity) {
-        this.productId = productId;
-        this.productQuantity = productQuantity;
+    public OrderDetail() {
     }
 
     private static final long serialVersionUID = 3048065223659541935L;
