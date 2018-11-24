@@ -2,6 +2,7 @@ package com.mm.controller;
 
 import com.google.gson.reflect.TypeToken;
 import com.mm.dto.OrderDto;
+import com.mm.dto.OrderMasterDTO;
 import com.mm.dto.StockDTO;
 import com.mm.exception.SellException;
 import com.mm.form.OrderForm;
@@ -14,13 +15,12 @@ import com.mm.util.GsonUtil;
 import com.mm.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.print.Pageable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,5 +89,12 @@ public class OrderController {
         orderDto.setStockDTOS(orderFormJson.getItems().stream().map(o -> new StockDTO(o.getProductId(), o.getProductQuantity())).collect(Collectors.toList()));
 
         return ResponseVo.success(orderService.createOrder(orderDto).getOrderId());
+    }
+
+    @GetMapping("/list")
+    public ResponseVo findByPage(@RequestParam(name = "openid") String openid, @RequestParam(name = "page",
+    defaultValue = "0") Integer page,@RequestParam(name = "size",defaultValue = "10") Integer size) {
+        List<OrderMasterDTO> orderMasterDTOS = orderService.findAllByPage(openid, PageRequest.of(page, size));
+        return ResponseVo.success(orderMasterDTOS);
     }
 }

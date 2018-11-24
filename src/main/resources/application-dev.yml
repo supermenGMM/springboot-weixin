@@ -16,6 +16,8 @@ spring:
     database: mysql
   freemarker:
     check-template-location: false
+  jackson:
+    default-property-inclusion: non_null
 logging:
   pattern:
     console: "%d  - [%thread] - %-5level - [%logger{50}]  - [%msg%n]  "

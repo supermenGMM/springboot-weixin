@@ -1,18 +1,18 @@
 package com.mm.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
-import javax.persistence.Id;
-
+import com.mm.dto.OrderMasterDTO;
 import com.mm.myenum.OrderStatusEnum;
 import com.mm.myenum.PayStatusEnum;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.beans.BeanUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -87,5 +87,12 @@ public class OrderMaster  implements Serializable {
 	 */
    	@Column(name = "update_time" )
 	private Date updateTime;
+
+   	public OrderMasterDTO convertToOrderMasterDto(){
+        OrderMasterDTO orderMasterDTO = new OrderMasterDTO();
+        BeanUtils.copyProperties(this, orderMasterDTO);
+        return orderMasterDTO;
+    }
+
 
 }

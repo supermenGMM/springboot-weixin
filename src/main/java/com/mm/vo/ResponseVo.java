@@ -9,9 +9,9 @@ import java.io.Serializable;
 @Data
 public class ResponseVo implements Serializable{
     @JsonProperty("code")
-    private Integer code;
+    private Integer code=0;
     @JsonProperty("msg")
-    private String message;
+    private String message="";
     @JsonProperty("data")
     private Object data;
 
