@@ -2,7 +2,6 @@ package com.mm.service;
 
 import com.mm.dto.OrderDto;
 import com.mm.exception.SellException;
-import com.mm.myenum.ProductStatusEnum;
 import com.mm.myenum.ResponseEnum;
 import com.mm.pojo.OrderMaster;
 import com.mm.pojo.ProductInfo;
@@ -10,20 +9,10 @@ import com.mm.repository.OrderDetailRepository;
 import com.mm.repository.OrderMasterRepository;
 import com.mm.repository.ProductInfoRepository;
 import com.mm.util.KeyUtils;
-import javassist.bytecode.stackmap.BasicBlock;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.xml.ws.Response;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import static com.mm.pojo.QProductInfo.productInfo;
 
 @Service
 public class OrderService {

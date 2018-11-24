@@ -18,7 +18,7 @@ public class ProductCategoryservice {
         return productCategoryRepository.findAll();
     }
 
-    public List<ProductCategory> findByCategoryIdIn(List<Integer> ids){
-        return productCategoryRepository.findByCategoryIdIn(ids);
+    public List<ProductCategory> findByCategoryTypeIn(List<Integer> ids){
+        return productCategoryRepository.findByCategoryTypeIn(ids);
     }
 }

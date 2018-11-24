@@ -32,7 +32,7 @@ public class ProductInfoController {
 
         List<ProductInfo> productInfos = productInfoService.findAll();
         List<Integer> categoryIds = productInfos.stream().map(ProductInfo::getCategoryType).distinct().collect(Collectors.toList());
-        List<ProductCategory> categoryList = productCategoryservice.findByCategoryIdIn(categoryIds);
+        List<ProductCategory> categoryList = productCategoryservice.findByCategoryTypeIn(categoryIds);
 
         //data
         List<ProductListVo> data = new ArrayList<>();

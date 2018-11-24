@@ -18,7 +18,7 @@ public class ProductInfoVo implements Serializable{
     @JsonProperty("name")
     private String productName;
     @JsonProperty("price")
-    private BigDecimal productPrice;
+    private Double productPrice;
     @JsonProperty("description")
     private String productDescription;
     @JsonProperty("icon")
