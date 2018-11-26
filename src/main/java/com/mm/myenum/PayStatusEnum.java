@@ -4,7 +4,9 @@ public enum PayStatusEnum {
     UNPAY(0, "未支付"),
     SUCCESS(1, "成功"),
     PAYING(2, "支付中"),
-    FAILED(3, "失败");
+    FAILED(3, "失败"),
+    REFUNDING(4,"退款中"),
+    REFUNDED(5,"已退款");
 
     private int code;
     private String desc;

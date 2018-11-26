@@ -3,6 +3,10 @@ package com.mm.service;
 import com.mm.dto.OrderDto;
 import com.mm.dto.OrderMasterDTO;
 import com.mm.dto.StockDTO;
+import com.mm.exception.SellException;
+import com.mm.myenum.OrderStatusEnum;
+import com.mm.myenum.PayStatusEnum;
+import com.mm.myenum.ResponseEnum;
 import com.mm.pojo.OrderDetail;
 import com.mm.pojo.OrderMaster;
 import com.mm.pojo.ProductInfo;
@@ -10,6 +14,7 @@ import com.mm.repository.OrderDetailRepository;
 import com.mm.repository.OrderMasterRepository;
 import com.mm.util.ConvertUtil;
 import com.mm.util.KeyUtils;
+import com.mm.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mm.pojo.QOrderMaster.orderMaster;
 
 @Service
 @Slf4j
@@ -111,6 +118,54 @@ public class OrderService {
     public List<OrderMasterDTO> findAllByPage(String openId, Pageable pageable) {
         List<OrderMaster> all = orderMasterRepository.findOrderMastersByBuyerOpenidOrderByCreateTimeDesc(openId, pageable);
         return ConvertUtil.convertToListMasterDto(all);
+    }
+
+    /**
+     * 取消订单
+     * 只有没有异常 就是成功。
+     * @param orderId
+     * @param buyerOpenid
+     */
+    @Transactional
+    public boolean cancel(String orderId, String buyerOpenid){
+
+        OrderMaster orderMaster = findByOrderIdAndBuyerOpenid(orderId, buyerOpenid);
+        if ( orderMaster == null) {
+            throw new SellException(ResponseEnum.PRODUCT_NOT_FOUND);
+        }
+        //如果现在不能取消。就返回false
+        if(!OrderStatusEnum.findByCode(orderMaster.getOrderStatus()).isCanancel()){
+            return false;
+        }
+        orderMaster.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+
+        if (orderMaster.getPayStatus() == PayStatusEnum.SUCCESS.getCode()) {
+            //todo  如果支付了。则退款
+            orderMaster.setPayStatus(PayStatusEnum.REFUNDING.getCode());
+        }
+
+        //查找子订单
+        List<OrderDetail> orderDetails = findByOrderId(orderId);
+        orderDetails.forEach((OrderDetail od) ->{
+            //查找每个子订单上的产品。修改产品状态和库存
+            ProductInfo productInfo = productService.findById(od.getProductId());
+            productService.upOrDown(productInfo,productInfo.getProductStock() + od.getProductQuantity());
+        });
+        return true;
+    }
+
+    //todo 测试可能抛出的异常
+    public OrderMaster findByOrderIdAndBuyerOpenid(String orderId, String buyerOpenid){
+        return orderMasterRepository.findByOrderIdAndBuyerOpenid(orderId, buyerOpenid);
+    }
+
+    /**
+     * 根据订单查找订单详情列表
+     * @param orderId
+     * @return
+     */
+    private List<OrderDetail> findByOrderId(String orderId){
+        return  orderDetailRepository.findByOrderId(orderId);
     }
 }
 

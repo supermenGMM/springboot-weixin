@@ -10,5 +10,9 @@ import java.util.List;
 @Repository
 public interface OrderMasterRepository extends JpaRepository<OrderMaster,String>{
     List<OrderMaster> findOrderMastersByBuyerOpenidOrderByCreateTimeDesc(String buyerOpenId, Pageable pageable);
+
+    OrderMaster findByOrderIdAndBuyerOpenid(String orderId, String buyerOpenid);
+
+    OrderMaster findByBuyerOpenidAndBuyerPhone(String openid, String phone);
 }
 

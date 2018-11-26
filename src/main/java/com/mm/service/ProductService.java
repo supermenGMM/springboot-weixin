@@ -4,12 +4,14 @@ import com.mm.exception.SellException;
 import com.mm.myenum.ResponseEnum;
 import com.mm.pojo.ProductInfo;
 import com.mm.repository.ProductInfoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 @Service
+@Slf4j
 public class ProductService {
     @Autowired
     private ProductInfoRepository productInfoRepository;
@@ -32,14 +34,25 @@ public class ProductService {
      */
     public void reduceStock(String productId,Long quantity){
         ProductInfo productInfo = this.findById(productId);
-        Long remain = productInfo.getProductStock()- quantity;
-        if(remain<0){
+        Long newStock = productInfo.getProductStock()- quantity;
+        upOrDown(productInfo, newStock);
+        productInfoRepository.saveAndFlush(productInfo);
+    }
+
+    /**
+     * 根据传的库存修改商品的数量和状态
+     * @param productInfo
+     * @param newProductStock
+     */
+    public void upOrDown(ProductInfo productInfo, Long newProductStock) {
+        log.info("开始更新产品状态和库存。产品的id为[{}],新库存为为[{}]");
+        if(newProductStock<0){
             throw new SellException(ResponseEnum.PRODUCT_STOCK_NOENOUGH);
-        } else if(remain == 0){
+        } else if(newProductStock == 0){
             productInfo.down();
         } else {
-            productInfo.setProductStock(productInfo.getProductStock()-quantity);
+            productInfo.up(newProductStock);
         }
-        productInfoRepository.saveAndFlush(productInfo);
+        log.info("更新产品状态和库存结束。产品的id为[{}],新库存为为[{}]");
     }
 }

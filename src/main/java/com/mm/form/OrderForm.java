@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Data
 public class OrderForm implements Serializable {
+    //todo 修改notNull为notEmpty
     @NotNull(message = "姓名不能为空")
     private String name;
     @NotNull(message = "手机号不能为空")

@@ -14,12 +14,14 @@ import com.mm.service.OrderService;
 import com.mm.util.GsonUtil;
 import com.mm.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 import java.awt.print.Pageable;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +48,7 @@ public class OrderController {
         if (bindingResult.hasErrors()) {
             throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR.getCode(),bindingResult.getFieldError().getDefaultMessage());
         }
-
+        //todo  检查商品是否存在。检查商品是否下架。 是否需要？其实后面的逻辑都会处理。先检查只是不需要执行前面的这些逻辑。
         //将vo转换为Dto。
         OrderDto orderDto = new OrderDto();
         orderDto.setBuyerAddress(orderForm.getAddress());
@@ -88,13 +90,26 @@ public class OrderController {
         orderDto.setBuyerPhone(orderFormJson.getPhone());
         orderDto.setStockDTOS(orderFormJson.getItems().stream().map(o -> new StockDTO(o.getProductId(), o.getProductQuantity())).collect(Collectors.toList()));
 
-        return ResponseVo.success(orderService.createOrder(orderDto).getOrderId());
+        Map<String, String> map = new HashMap();
+        map.put("orderId",orderService.createOrder(orderDto).getOrderId());
+        return ResponseVo.success(map);
     }
 
     @GetMapping("/list")
-    public ResponseVo findByPage(@RequestParam(name = "openid") String openid, @RequestParam(name = "page",
-    defaultValue = "0") Integer page,@RequestParam(name = "size",defaultValue = "10") Integer size) {
+    public ResponseVo findByPage(@RequestParam(name = "openid",required = true) String openid, @RequestParam(name = "page",
+    defaultValue = "0",required = false) Integer page,@RequestParam(name = "size",defaultValue = "10",required = false) Integer size) {
+        if(StringUtils.isNotBlank("openid")){
+            throw new SellException(ResponseEnum.REQUEST_PARAMETER_ERROR);
+        }
         List<OrderMasterDTO> orderMasterDTOS = orderService.findAllByPage(openid, PageRequest.of(page, size));
         return ResponseVo.success(orderMasterDTOS);
     }
+
+    @PostMapping("/cancel")
+    public ResponseVo cancel(@RequestParam String openid,@RequestParam String orderId) {
+        //todo 检查请求参数
+        orderService.cancel(openid, orderId);
+        return ResponseVo.success(null);
+    }
+
 }

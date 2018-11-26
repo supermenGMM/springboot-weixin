@@ -106,4 +106,10 @@ public class ProductInfo  implements Serializable {
         this.setProductStock(0L);
         this.setProductStatus(ProductStatusEnum.DOWN.getCode());
     }
+
+    public void up(Long productStock) {
+        this.setProductStock(productStock);
+        this.setProductStatus(ProductStatusEnum.UP.getCode());
+    }
+
 }

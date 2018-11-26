@@ -3,10 +3,13 @@ package com.mm.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mm.myenum.OrderStatusEnum;
 import com.mm.myenum.PayStatusEnum;
+import com.sun.prism.impl.BaseMesh;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class OrderMasterDTO extends OrderDto {
     private String orderId;
     private Double orderAmount;
