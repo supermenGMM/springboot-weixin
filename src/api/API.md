@@ -179,6 +179,20 @@ orderId: 161899085773669363
 ```
 
 ###取消订单
+```
+分析：
+1.根据openid和orderId查找订单。
+2.修改订单状态。
+3.恢复订单中产品的库存、状态。
+4.如果支付成功，则需要退款
+步骤：
+1.在OrderMasterdao，service添加方法
+findByOrderIddAndBuyerOpenid(String OrderId ,String buyerOpenid )
+2.在OrderDetaildao，service中添加通过orderId查找orderDetail的方法
+
+
+
+```
 
 ```
 POST /sell/buyer/order/cancel
