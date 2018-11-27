@@ -3,11 +3,12 @@ package com.mm.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mm.myenum.OrderStatusEnum;
 import com.mm.myenum.PayStatusEnum;
-import com.sun.prism.impl.BaseMesh;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class OrderMasterDTO extends OrderDto {
@@ -35,4 +36,6 @@ public class OrderMasterDTO extends OrderDto {
      */
     @JsonSerialize(using = DateSerialize.class)
     private Date updateTime;
+
+    private List<OrderDetailDTO> orderDetailList;
 }

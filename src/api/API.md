@@ -135,7 +135,17 @@ size: 10
 ###查询订单详情
 
 ```
-GET /sell/buyer/order/detail
+orderDetailRespository
+    根据orderId查询List
+    list<OrderDetail> findByOrderId();  
+orderService
+DTO
+OrderDetailDTO 映射响应的
+    
+```
+
+```/sell/buyer/order/detail
+GET 
 ```
 
 参数

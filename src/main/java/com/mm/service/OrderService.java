@@ -1,5 +1,6 @@
 package com.mm.service;
 
+import com.mm.dto.OrderDetailDTO;
 import com.mm.dto.OrderDto;
 import com.mm.dto.OrderMasterDTO;
 import com.mm.dto.StockDTO;
@@ -14,7 +15,6 @@ import com.mm.repository.OrderDetailRepository;
 import com.mm.repository.OrderMasterRepository;
 import com.mm.util.ConvertUtil;
 import com.mm.util.KeyUtils;
-import com.mm.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.mm.pojo.QOrderMaster.orderMaster;
 
 @Service
 @Slf4j
@@ -168,5 +166,23 @@ public class OrderService {
     private List<OrderDetail> findByOrderId(String orderId){
         return  orderDetailRepository.findByOrderId(orderId);
     }
+
+    public OrderMasterDTO findOrderAll(String openid, String orderId) {
+        OrderMaster orderMaster = findByOrderIdAndBuyerOpenid(orderId, openid);
+        OrderMasterDTO orderMasterDTO = new OrderMasterDTO();
+        BeanUtils.copyProperties(orderMaster, orderMasterDTO);
+
+        List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
+        List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(orderId);
+        for (OrderDetail orderDetail1 :orderDetails){
+            OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+            BeanUtils.copyProperties(orderDetail1, orderDetailDTO);
+            orderDetailDTOS.add(orderDetailDTO);
+        }
+        orderMasterDTO.setOrderDetailList(orderDetailDTOS);
+        return orderMasterDTO;
+    }
+
+
 }
 

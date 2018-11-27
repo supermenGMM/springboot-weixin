@@ -37,16 +37,17 @@ public class OrderController {
 
     /**
      * 通过表单方式请求
+     *
      * @param orderForm
      * @param bindingResult
      * @return
      */
-    @PostMapping(value = "/create" )
+    @PostMapping(value = "/create")
     public ResponseVo create2(@Valid OrderForm orderForm, BindingResult bindingResult) {
 
         //检查 请求信息
         if (bindingResult.hasErrors()) {
-            throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR.getCode(),bindingResult.getFieldError().getDefaultMessage());
+            throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR.getCode(), bindingResult.getFieldError().getDefaultMessage());
         }
         //todo  检查商品是否存在。检查商品是否下架。 是否需要？其实后面的逻辑都会处理。先检查只是不需要执行前面的这些逻辑。
         //将vo转换为Dto。
@@ -56,30 +57,32 @@ public class OrderController {
         orderDto.setBuyerOpenid(orderForm.getOpenid());
         orderDto.setBuyerPhone(orderForm.getPhone());
         //将items转换为数组,
-        List<ProductForm> productForms = GsonUtil.jsonToList(orderForm.getItems(),new TypeToken<List<ProductForm>>(){}.getType());
+        List<ProductForm> productForms = GsonUtil.jsonToList(orderForm.getItems(), new TypeToken<List<ProductForm>>() {
+        }.getType());
 
-        if (productForms==null||productForms.isEmpty()) {//无法检查里面的字段是否有空的
+        if (productForms == null || productForms.isEmpty()) {//无法检查里面的字段是否有空的
             throw new SellException(ResponseEnum.ORDER_NULL_ERROR);
         }
         orderDto.setStockDTOS(productForms.stream().map(p -> new StockDTO(p.getProductId(), p.getProductQuantity())).collect(Collectors.toList()));
 
         Map<String, String> map = new HashMap();
-        map.put("orderId",orderService.createOrder(orderDto).getOrderId());
+        map.put("orderId", orderService.createOrder(orderDto).getOrderId());
         return ResponseVo.success(map);
     }
 
     /**
      * 通过json方式请求
+     *
      * @param orderFormJson
      * @param bindingResult
      * @return
      */
-    @PostMapping(value = "/createjson" )
+    @PostMapping(value = "/createjson")
     public ResponseVo create(@Valid @RequestBody OrderFormJson orderFormJson, BindingResult bindingResult) {
 
         //检查 请求信息
         if (bindingResult.hasErrors()) {
-            throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR.getCode(),bindingResult.getFieldError().getDefaultMessage());
+            throw new SellException(ResponseEnum.REQUEST_CONTENT_ERROR.getCode(), bindingResult.getFieldError().getDefaultMessage());
         }
 
         //将vo转换为Dto。
@@ -91,14 +94,15 @@ public class OrderController {
         orderDto.setStockDTOS(orderFormJson.getItems().stream().map(o -> new StockDTO(o.getProductId(), o.getProductQuantity())).collect(Collectors.toList()));
 
         Map<String, String> map = new HashMap();
-        map.put("orderId",orderService.createOrder(orderDto).getOrderId());
+        map.put("orderId", orderService.createOrder(orderDto).getOrderId());
         return ResponseVo.success(map);
     }
 
+    //todo，根据orderId查找订单。然后与传入的openId做比较。openid这样用
     @GetMapping("/list")
-    public ResponseVo findByPage(@RequestParam(name = "openid",required = true) String openid, @RequestParam(name = "page",
-    defaultValue = "0",required = false) Integer page,@RequestParam(name = "size",defaultValue = "10",required = false) Integer size) {
-        if(StringUtils.isNotBlank("openid")){
+    public ResponseVo findByPage(@RequestParam(name = "openid", required = true) String openid, @RequestParam(name = "page",
+        defaultValue = "0", required = false) Integer page, @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
+        if (StringUtils.isNotBlank("openid")) {
             throw new SellException(ResponseEnum.REQUEST_PARAMETER_ERROR);
         }
         List<OrderMasterDTO> orderMasterDTOS = orderService.findAllByPage(openid, PageRequest.of(page, size));
@@ -106,13 +110,19 @@ public class OrderController {
     }
 
     @PostMapping("/cancel")
-    public ResponseVo cancel(@RequestParam(value = "openid") String openid,@RequestParam(value = "orderId") String orderId) {
+    public ResponseVo cancel(@RequestParam(value = "openid") String openid, @RequestParam(value = "orderId") String orderId) {
         //todo 检查请求参数
         if (orderService.cancel(openid, orderId)) {
             return ResponseVo.success(null);
-        }else {
+        } else {
+
             return ResponseVo.error(ResponseEnum.ORDER_HAS_CANCELD);
         }
     }
 
+    @GetMapping("/detail")
+    public ResponseVo detail(@RequestParam(value = "openid") String openid, @RequestParam(value = "orderId")String orderId){
+        //todo检查请求参数
+       return ResponseVo.success( orderService.findOrderAll(openid, orderId));
+    }
 }
