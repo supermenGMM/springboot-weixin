@@ -106,10 +106,13 @@ public class OrderController {
     }
 
     @PostMapping("/cancel")
-    public ResponseVo cancel(@RequestParam String openid,@RequestParam String orderId) {
+    public ResponseVo cancel(@RequestParam(value = "openid") String openid,@RequestParam(value = "orderId") String orderId) {
         //todo 检查请求参数
-        orderService.cancel(openid, orderId);
-        return ResponseVo.success(null);
+        if (orderService.cancel(openid, orderId)) {
+            return ResponseVo.success(null);
+        }else {
+            return ResponseVo.error(ResponseEnum.ORDER_HAS_CANCELD);
+        }
     }
 
 }

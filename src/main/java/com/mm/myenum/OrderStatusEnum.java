@@ -2,7 +2,7 @@ package com.mm.myenum;
 
 public enum OrderStatusEnum {
     NEW(0, "新建",true),
-    CANCEL(1, "取消",true),
+    CANCEL(1, "取消",false),
     REVEIVE(2, "已接单",true),
     DILIVERYING(3, "配送中",false),
     FINISHED(4, "已送达", false),

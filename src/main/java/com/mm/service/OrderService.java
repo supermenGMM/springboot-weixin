@@ -135,6 +135,7 @@ public class OrderService {
         }
         //如果现在不能取消。就返回false
         if(!OrderStatusEnum.findByCode(orderMaster.getOrderStatus()).isCanancel()){
+            log.info("id为[{}]的订单已取消[{}]",orderId);
             return false;
         }
         orderMaster.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
