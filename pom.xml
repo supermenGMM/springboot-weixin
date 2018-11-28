@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.mm.project</groupId>
+	<groupId>com.mm</groupId>
 	<artifactId>order-food</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <optional>true</optional>
+            <!--<optional>true</optional>-->
         </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -102,10 +102,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
             <!--添加QueryDSL插件支持-->
             <plugin>
                 <groupId>com.mysema.maven</groupId>
@@ -128,11 +124,6 @@
 	</build>
 
     <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-aop</artifactId>
-        <version>2.1.0.RELEASE</version>
-    </dependency>
 
 
 </project>

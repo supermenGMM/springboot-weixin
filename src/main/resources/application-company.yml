@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 80
   servlet:
     context-path: /sell
 spring:
@@ -18,6 +18,12 @@ spring:
     check-template-location: false
   jackson:
     default-property-inclusion: non_null
+  thymeleaf:
+    prefix: classpath:/templates/
+  mvc:
+    view:
+      prefix: /html/
+      suffix: .html
 logging:
   pattern:
     console: "%d  - [%thread] - %-5level - [%logger{50}]  - [%msg%n]  "

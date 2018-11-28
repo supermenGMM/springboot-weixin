@@ -2,12 +2,8 @@ package com.mm.service;
 
 import com.mm.dto.OrderDto;
 import com.mm.dto.StockDTO;
-import com.mm.pojo.OrderDetail;
 import com.mm.pojo.OrderMaster;
-import com.mm.repository.OrderDetailRepository;
 import com.mm.repository.OrderMasterRepository;
-import com.oracle.webservices.internal.api.EnvelopeStyle;
-import org.hibernate.event.spi.PostUpdateEventListener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NonUniqueResultException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
