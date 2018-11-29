@@ -1,6 +1,7 @@
 package com.mm;
 
 import org.junit.Test;
+import org.yaml.snakeyaml.util.UriEncoder;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,4 +27,10 @@ public class junitTest {
         return m.matches();
     }
 
+
+    @Test
+    public void test() {
+        String encode = UriEncoder.encode("http://supermeng.natapp1.cc/sell/winxin/auth?code=222&state=22");
+        System.out.println(encode);
+    }
 }
