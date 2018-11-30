@@ -12,6 +12,7 @@ import com.mm.myenum.ResponseEnum;
 import com.mm.pojo.ProductInfo;
 import com.mm.service.OrderService;
 import com.mm.util.GsonUtil;
+import com.mm.vo.OrderIdVo;
 import com.mm.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -112,10 +113,9 @@ public class OrderController {
     @PostMapping("/cancel")
     public ResponseVo cancel(@RequestParam(value = "openid") String openid, @RequestParam(value = "orderId") String orderId) {
         //todo 检查请求参数
-        if (orderService.cancel(openid, orderId)) {
+        if (orderService.cancel(orderId,openid)) {
             return ResponseVo.success(null);
         } else {
-
             return ResponseVo.error(ResponseEnum.ORDER_HAS_CANCELD);
         }
     }
@@ -124,5 +124,12 @@ public class OrderController {
     public ResponseVo detail(@RequestParam(value = "openid") String openid, @RequestParam(value = "orderId")String orderId){
         //todo检查请求参数
        return ResponseVo.success( orderService.findOrderAll(openid, orderId));
+    }
+
+    @PostMapping("/detail2")
+    public ResponseVo detailJson(@RequestBody String openid,@RequestBody String orderId) throws InterruptedException {
+        Thread.sleep(60000);
+        //todo检查请求参数
+        return ResponseVo.success( orderService.findOrderAll(openid,orderId));
     }
 }

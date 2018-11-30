@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Controller
 public class IndexController {
-    @GetMapping
+    @GetMapping(value = "/")
     public String hello(Map<String,Object> map) {
         map.put("hello", "你好，supermenG");
         return "/index";
