@@ -30,6 +30,12 @@ public class ResponseVo implements Serializable{
         responseVo.setMessage(responseEnum.getDesc());
         return responseVo;
     }
+    public static ResponseVo error(Integer code,String message) {
+        ResponseVo responseVo = new ResponseVo();
+        responseVo.setCode(code);
+        responseVo.setMessage(message);
+        return responseVo;
+    }
     public static ResponseVo error(Exception e) {
         ResponseVo responseVo = new ResponseVo();
         if (e instanceof SellException) {
