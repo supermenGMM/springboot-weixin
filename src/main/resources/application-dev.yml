@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: "jdbc:mysql://192.168.56.102:3306/orderfood?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false"
     username: "root"
-    password: "123456"
+    password: ENC(rdaloo4N6AsPE/V9Z7l89g==)
   jpa:
     hibernate:
       ddl-auto: update
