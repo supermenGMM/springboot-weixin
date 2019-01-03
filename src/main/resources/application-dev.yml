@@ -18,14 +18,3 @@ spring:
     check-template-location: false
   jackson:
     default-property-inclusion: non_null
-logging:
-  pattern:
-    console: "%d  - [%thread] - %-5level - [%logger{50}]  - [%msg%n]  "
-#  path: log/
-  file: log/my.log
-  level:
-    root: info
-#    com.mm: debug
-#  pattern:
-#    file: "%d{yyyy‐MM‐dd} === [%thread] === %‐5level === %logger{50} ==== %msg%n"
-#    console: "%d{yyyy‐MM‐dd} [%thread] %‐5level %logger{50} ‐ %msg%n"

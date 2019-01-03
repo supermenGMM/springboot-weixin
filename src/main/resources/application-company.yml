@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: "jdbc:mysql://10.3.200.4:3306/orderfood?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false"
+    url: "jdbc:mysql://10.3.200.4:3306/orderfood?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&autoReconnect=true&failOverReadOnly=false"
     username: "root"
     password: "root"
   jpa:
@@ -24,14 +24,3 @@ spring:
     view:
       prefix: /html/
       suffix: .html
-logging:
-  pattern:
-    console: "%d  - [%thread] - %-5level - [%logger{50}]  - [%msg%n]  "
-#  path: log/
-  file: log/my.log
-  level:
-    root: info
-#    com.mm: debug
-#  pattern:
-#    file: "%d{yyyy‐MM‐dd} === [%thread] === %‐5level === %logger{50} ==== %msg%n"
-#    console: "%d{yyyy‐MM‐dd} [%thread] %‐5level %logger{50} ‐ %msg%n"
