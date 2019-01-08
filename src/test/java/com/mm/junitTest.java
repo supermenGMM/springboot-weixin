@@ -33,4 +33,9 @@ public class junitTest {
         String encode = UriEncoder.encode("http://supermeng.natapp1.cc/sell/winxin/auth?code=222&state=22");
         System.out.println(encode);
     }
+
+    @Test
+    public void testFormat() {
+        System.out.println(String.format("aaa_%s","_bfd"));
+    }
 }

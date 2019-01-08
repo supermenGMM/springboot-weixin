@@ -1,2 +1,8 @@
 测试账号授权网址
 https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx935a851a74f070f2&redirect_uri=http://supermeng.natapp1.cc/sell/winxin/auth&response_type=code&scope=snsapi_base#wechat_redirect
+
+https://open.weixin.qq.com/connect/qrconnect?appid=wx935a851a74f070f2&redirect_uri=http://supermeng.natapp1.cc/sell/winxin/auth&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect
+
+#测试账号登陆地址
+https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
+
