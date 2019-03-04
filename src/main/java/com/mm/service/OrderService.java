@@ -184,5 +184,15 @@ public class OrderService {
     }
 
 
+    /**
+     * 保存订单
+     *
+     * @param orderMaster
+     * @return
+     */
+    @Transactional
+    public OrderMaster secKillSaveOrder(OrderMaster orderMaster) {
+        return orderMasterRepository.save(orderMaster);
+    }
 }
 

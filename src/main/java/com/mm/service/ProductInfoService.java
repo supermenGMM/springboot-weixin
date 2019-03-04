@@ -32,4 +32,11 @@ public class ProductInfoService {
         }
         return null;
     }
+
+    //减少库存。这里应该加锁
+    public synchronized void reduceStock(String id, Long sellNum) {
+        ProductInfo productInfo = findStock(id);
+        productInfo.setProductStock(productInfo.getProductStock() - sellNum);
+        productInfoRepository.save(productInfo);
+    }
 }
