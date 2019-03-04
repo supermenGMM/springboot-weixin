@@ -2,7 +2,6 @@ package com.mm.aspect;
 
 import com.mm.exception.SellException;
 import com.mm.myenum.ResponseEnum;
-import com.mm.pojo.SellerInfo;
 import com.mm.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import sun.util.locale.provider.LocaleServiceProviderPool;
 
 @Slf4j
 @ControllerAdvice

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,4 +25,11 @@ public class ProductInfoService {
         return productInfoRepository.findAll();
     }
 
+    public ProductInfo findStock(String productId) {
+        Optional<ProductInfo> optional = productInfoRepository.findById(productId);
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        return null;
+    }
 }
