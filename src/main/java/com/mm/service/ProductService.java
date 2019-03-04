@@ -32,11 +32,12 @@ public class ProductService {
      * @param productId 商品id
      * @param quantity 商品数量
      */
-    public void reduceStock(String productId,Long quantity){
+    public Long reduceStock(String productId, Long quantity){
         ProductInfo productInfo = this.findById(productId);
         Long newStock = productInfo.getProductStock()- quantity;
         upOrDown(productInfo, newStock);
         productInfoRepository.saveAndFlush(productInfo);
+        return newStock;
     }
 
     /**
