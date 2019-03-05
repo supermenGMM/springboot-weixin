@@ -9,14 +9,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RedisTest {
-    private String key = "product";
+    private static String key = "product";
+
+    public static String getKey() {
+        return key;
+    }
 
     /**
      * 测试添加缓存
      * @param id
      * @return
      */
-    @Cacheable(value = { "sampleCache" },key="targetClass.getName()+'.product.'+#id")
+    @Cacheable(value =  {"sampleCache","sampleCache2"} ,key="T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
     public ProductInfo findById(String id) {
         System.out.println("执行方法====");
         ProductInfo productInfo = new ProductInfo();
@@ -29,7 +33,7 @@ public class RedisTest {
      * 清楚缓存
      * @param id
      */
-    @CacheEvict(value = "sampleCache",key = "targetClass.getName()+'.product.'+#id")
+    @CacheEvict(value =  {"sampleCache","sampleCache2"} ,key = "T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
     public void delProduct(String id) {
         System.out.println("删除对象");
         //update 或者删除这个对象
@@ -39,7 +43,7 @@ public class RedisTest {
      * 更新缓存
      * @param id
      */
-    @CachePut(value = "sampleCache",key = "targetClass.getName()+'.product.'+#id")
+    @CachePut(value =  {"sampleCache","sampleCache2"} ,key = "T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
     public ProductInfo updateProduct(String id) {
 
         System.out.println("更新对象");
