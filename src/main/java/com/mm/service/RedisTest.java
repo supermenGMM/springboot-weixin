@@ -20,7 +20,7 @@ public class RedisTest {
      * @param id
      * @return
      */
-    @Cacheable(value =  {"sampleCache","sampleCache2"} ,key="T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
+    @Cacheable(value =  "testMap" ,key="T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
     public ProductInfo findById(String id) {
         System.out.println("执行方法====");
         ProductInfo productInfo = new ProductInfo();
@@ -33,7 +33,7 @@ public class RedisTest {
      * 清楚缓存
      * @param id
      */
-    @CacheEvict(value =  {"sampleCache","sampleCache2"} ,key = "T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
+    @CacheEvict(value =  "testMap" ,key = "T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
     public void delProduct(String id) {
         System.out.println("删除对象");
         //update 或者删除这个对象
@@ -43,7 +43,7 @@ public class RedisTest {
      * 更新缓存
      * @param id
      */
-    @CachePut(value =  {"sampleCache","sampleCache2"} ,key = "T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
+    @CachePut(value =  "testMap" ,key = "T(com.mm.service.RedisTest).getKey()+'.'+targetClass.getName()+#id")
     public ProductInfo updateProduct(String id) {
 
         System.out.println("更新对象");
