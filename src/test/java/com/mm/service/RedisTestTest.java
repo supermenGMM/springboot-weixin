@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -16,9 +18,10 @@ public class RedisTestTest {
     private RedisTest redisTest;
     @Test
     public void findById() {
+        redisTest.delProduct("1");
         ProductInfo byId1 = redisTest.findById("1");
         System.out.println(byId1);
-        redisTest.delProduct("1");
+//        redisTest.delProduct("1");
 
 
         ProductInfo byId2 = redisTest.findById("1");
@@ -31,5 +34,13 @@ public class RedisTestTest {
 
         ProductInfo byId3 = redisTest.findById("2");
         System.out.println(byId3);
+    }
+
+    @Test
+    public void test2() {
+        List<ProductInfo> list = redisTest.findList("1");
+        System.out.println(list);
+        List<ProductInfo> list2 = redisTest.findList("1");
+        System.out.println(list2);
     }
 }
