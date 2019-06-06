@@ -1,11 +1,14 @@
 package com.mm.controller;
 
+import com.mm.util.HttpsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/winxin")
@@ -20,4 +23,21 @@ public class WinxinController {
         log.info(forObject);
     }
 
+    /**
+     * 获取access_token
+     *
+     */
+    public static String getAccessToken() throws IOException {
+        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb884adfc1a6c4c4f&secret=83c68e5a5540804f81c9fc9f3c821b18";
+        byte[] bytes = HttpsUtil.doGet(url);
+        String s = new String(bytes);
+        return s;
+    }
+    public static void main(String[] args) throws IOException {
+        try {
+            System.out.println(getAccessToken());;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

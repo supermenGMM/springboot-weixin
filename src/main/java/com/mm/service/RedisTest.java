@@ -23,8 +23,10 @@ public class RedisTest {
      * @param id
      * @return
      */
-    @Cacheable(value = "testMap" ,key="T(com.mm.service.RedisTest).getKey()+'.'+#targetClass.getName()+#methodName+#id",
-        unless="#result==null&&#result.isEmpty()&&#result.size()==0")//unless当不是某个情况下
+    @Cacheable(value = "testMap" ,key="" +
+        "#methodName+#id",
+        unless="#result==null&&#result.isEmpty()&&" +
+            "#result.size()==0")//unless当不是某个情况下
     public List<ProductInfo> findList(String id) {
         System.out.println("执行方法====");
         ProductInfo productInfo = new ProductInfo();
